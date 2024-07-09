@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Migration Dashboard</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif; /* Set font-family to Times New Roman */
+            background-color: rgb(217, 244, 221); /* Set background color to light green */
+        }
+
+        h1 {
+            text-align: center; /* Center align headings */
+            font-style: bold; /* Set font style to bold */
+            margin-top: 25px; /* Add margin to the top*/
+            margin-bottom: 25px; /* Add margin to the bottom */
+
+        }
+        h2 {
+            margin-top: 30px; /* Add margin to the top */
+            text-align: center; /* Center align headings */
+        }
+        h3 {
+            font-size: 1.4em; /* Increase font size of h3 */
+            text-align: center; /* Center align h3 */
+            margin-top: 0; /* Remove top margin of h3 */
+            font-weight: normal; /* Set font weight to normal */
+            margin-bottom: 0px; /* Remove bottom margin of h3 */
+        }
+        .bounds {
+            text-align: center; /* Center align bounds container */
+        }
+        .bound {
+            display: inline-block; /* Display bounds inline */
+        }
+        .disclaimer {
+            font-style: italic; /* Set font style to italic */
+            font-weight: normal; /* Set font weight to normal */
+            margin-bottom: 0px; /* Add margin to the top of the disclaimer */
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Create two columns with equal width */
+            grid-gap: 20px; /* Add gap between grid items */
+            margin: 20px; /* Add margin to container */
+        }
+        .input-container {
+            padding: 20px; /* Add padding to input container */
+            border: 1px solid #ccc; /* Add border to input container */
+        }
+        .graph-container {
+            padding: 20px; /* Add padding to graph container */
+            border: 1px solid #ccc; /* Add border to graph container */
+        }
+        .graph {
+            width: 100%; /* Ensure graph fills container */
+            height: auto; /* Automatically adjust height */
+        }
+    </style>
+</head>
+<body>
+    <h1>Irish Migration Flow Simulation Dashboard</h1>
+
+    <div class="container">
+        <div class="input-container">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.gdp.label }}<br>
+                {{ form.gdp(size=20) }}
+            </p>
+            <p>
+                {{ form.inflation_previous_year.label }}<br>
+                {{ form.inflation_previous_year(size=20) }}
+            </p>
+            <p>
+                {{ form.inflation_current_year.label }}<br>
+                {{ form.inflation_current_year(size=20) }}
+            </p>
+            <p>
+                {{ form.unemployment_previous_year.label }}<br>
+                {{ form.unemployment_previous_year(size=20) }}
+            </p>
+            <p>
+                {{ form.unemployment_current_year.label }}<br>
+                {{ form.unemployment_current_year(size=20) }}
+            </p>
+            <p>
+                {{ form.feature1.label }}<br>
+                {{ form.feature1(size=20) }}
+            </p>
+            <p>
+                {{ form.feature2.label }}<br>
+                {{ form.feature2(size=20) }}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+
+    </div>
+    <div class="graph-container">
+        <img src="{{ url_for('static', filename='images/Migration2.png') }}" alt="Migration Graph" class="img">
+    </div>
+
+</div>
+
+    {% if prediction is not none %}
+        <h2>Predicted Next Year Net Migration Percentage of Population: {{ prediction }}</h2>
+    {% endif %}
+
+    <div class="bounds">
+        {% if lower_bound is not none %}
+            <h3 class="bound">95% Confidence Interval: {{ lower_bound }}</h3>
+        {% endif %}
+
+        {% if upper_bound is not none %}
+            <h3 class="bound">-  {{ upper_bound }}</h3>
+        {% endif %}
+    </div>
+
+    <h4 class="disclaimer"> Disclaimer: unforeseen migration flows due to international conflicts are not accounted for by this model </h4>
+</body>
+</html>
